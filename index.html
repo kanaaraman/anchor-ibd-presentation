@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Scroll-driven scenes over a morphing particle field. One dark look by design.
-   Colour jobs: teal = the project, blue = swarm, amber = each hospital alone, green = pooled ceiling. */
+   Colour jobs: teal = the project, blue = swarm, amber = each hospital alone, green = all records in one place (ceiling). */
 :root{
   --bg:#04090c; --panel:rgba(12,24,30,.74); --panel-solid:#0c181e;
   --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.18);
@@ -283,7 +283,7 @@ input[type=range]{accent-color:var(--teal);width:150px}
   <div class="wrap">
     <div class="eyebrow rv">01 · The problem</div>
     <h2 class="rv" style="--d:1">Each registry alone is <em>too small</em></h2>
-    <p class="lede rv" style="--d:2">Sweden and Norway have comparable healthcare systems and strong IBD registries, but research stays national. Cohorts are too small for treatment-response and subgroup studies, and patient data cannot simply be pooled across the border under GDPR, national law and the EHDS.</p>
+    <p class="lede rv" style="--d:2">Sweden and Norway have comparable healthcare systems and strong IBD registries, but research stays national. Cohorts are too small for treatment-response and subgroup studies, and patient data cannot simply be copied across the border under GDPR, national law and the EHDS.</p>
     <div class="kpis">
       <div class="panel kpi rv" style="--d:3"><b data-count="100000">0</b><span>people with IBD in Sweden</span><small>SWIBREG</small></div>
       <div class="panel kpi rv" style="--d:4"><b data-count="40000">0</b><span>people with IBD in Norway</span><small>NorIBD</small></div>
@@ -299,13 +299,14 @@ input[type=range]{accent-color:var(--teal);width:150px}
   <div class="wrap topo">
     <div>
       <div class="eyebrow rv">02 · The idea</div>
-      <h2 class="rv" style="--d:1">Move the <em>model</em>, not the patients</h2>
-      <p class="lede rv" style="--d:2">There are three ways to learn from three hospitals. Pick one and watch what travels over the network.</p>
+      <h2 class="rv" style="--d:1">Patient records stay home. <em>Only the model travels.</em></h2>
+      <p class="lede rv" style="--d:2">A <b>model</b> here is a formula that predicts remission. Training it means tuning its 1,185 numbers, called <b>weights</b>, on patients. Three hospitals can build one model together in three ways. Pick one and watch what is sent between them.</p>
       <div class="tabs rv" style="--d:3" id="topoTabs" role="tablist">
-        <button class="chip" data-t="central" role="tab">Pool the data</button>
-        <button class="chip" data-t="fedavg" role="tab">Central server (FedAvg)</button>
-        <button class="chip on" data-t="swarm" role="tab">Swarm learning</button>
+        <button class="chip" data-t="central" role="tab">A · Copy all records to one place</button>
+        <button class="chip" data-t="fedavg" role="tab">B · Central server averages the model</button>
+        <button class="chip on" data-t="swarm" role="tab">C · Hospitals average it themselves</button>
       </div>
+      <p class="lede rv" style="--d:4;font-size:16px;margin-top:4px" id="topoDesc"></p>
       <div class="facts rv" style="--d:4" id="topoFacts"></div>
     </div>
     <div class="panel topo-box rv" style="--d:3">
@@ -332,7 +333,7 @@ input[type=range]{accent-color:var(--teal);width:150px}
         <div class="status" id="simStatus">Press <b>Play</b> to start round 1.</div>
       </div>
       <div class="panel rv" style="--d:4">
-        <div class="legend"><span><i style="background:var(--swarm)"></i>Swarm, all hospitals</span><span><i style="background:var(--local)"></i>Each hospital alone</span><span><i style="background:var(--pooled)"></i>Pooled ceiling</span></div>
+        <div class="legend"><span><i style="background:var(--swarm)"></i>Swarm, all hospitals</span><span><i style="background:var(--local)"></i>Each hospital alone</span><span><i style="background:var(--pooled)"></i>All records in one place (ceiling)</span></div>
         <svg id="simChart" viewBox="0 0 560 300" role="img" aria-label="Average AUROC per round for the swarm model, with reference lines for alone and pooled"></svg>
         <div class="readout" id="simRO"></div>
         <p class="tiny" style="margin-top:12px">In-browser logistic model on synthetic patients, so numbers vary with each new cohort. The measured PoC results are in the Results scene, and the data behind them is explained in “Is the data realistic?”.</p>
@@ -457,14 +458,14 @@ input[type=range]{accent-color:var(--teal);width:150px}
     <div class="res">
       <div class="panel chart rv" style="--d:2">
         <div class="tabs" id="resTabs"><button class="chip on" data-v="site">By hospital</button><button class="chip" data-v="sex">Women and men</button></div>
-        <div class="legend"><span><i style="background:var(--local)"></i>Alone</span><span><i style="background:var(--swarm)"></i>Swarm</span><span><i style="background:var(--pooled)"></i>Pooled (not allowed)</span></div>
-        <svg id="resChart" viewBox="0 0 640 330" role="img" aria-label="AUROC by hospital or by sex for alone, swarm and pooled training"></svg>
+        <div class="legend"><span><i style="background:var(--local)"></i>Alone</span><span><i style="background:var(--swarm)"></i>Swarm</span><span><i style="background:var(--pooled)"></i>All records in one place (not allowed)</span></div>
+        <svg id="resChart" viewBox="0 0 640 330" role="img" aria-label="AUROC by hospital or by sex for alone, swarm and all-records-in-one-place training"></svg>
         <p class="tiny">AUROC on 3,000 new synthetic patients per hospital, mean of 5 training runs. Axis starts at 0.5 (chance).</p>
       </div>
       <div class="panel rv" style="--d:3;display:flex;flex-direction:column;gap:16px;justify-content:center">
         <div class="bigk"><span data-count="88" data-suf="%">0</span></div>
-        <p class="lede" style="font-size:18px">of the gain from pooling all data, <b>without moving a single record</b>.</p>
-        <p class="mono small"><span style="color:var(--local)">0.743</span> alone → <b style="color:var(--swarm)">0.758</b> swarm → <span style="color:var(--pooled)">0.760</span> pooled</p>
+        <p class="lede" style="font-size:18px">of the accuracy gain you would get by copying all records to one place, <b>without moving a single record</b>.</p>
+        <p class="mono small"><span style="color:var(--local)">0.743</span> alone → <b style="color:var(--swarm)">0.758</b> swarm → <span style="color:var(--pooled)">0.760</span> all in one place</p>
         <p class="small">The swarm model scores 0.756 for both women and men, and its predicted remission rates match observed rates (women 38.8% vs 39.8%, men 45.4% vs 46.2%).</p>
       </div>
     </div>
@@ -479,7 +480,7 @@ input[type=range]{accent-color:var(--teal);width:150px}
     <div class="res">
       <div class="panel chart rv" style="--d:2">
         <div class="tiny">SHARED MODEL, 30 ROUNDS · HOVER FOR VALUES</div>
-        <svg id="curveChart" viewBox="0 0 640 340" role="img" aria-label="AUROC per round for each hospital and overall, with alone and pooled reference lines"></svg>
+        <svg id="curveChart" viewBox="0 0 640 340" role="img" aria-label="AUROC per round for each hospital and overall, with reference lines for alone and all records in one place"></svg>
       </div>
       <div class="panel rv" style="--d:3">
         <div class="tiny">NOISE ADDED TO EACH UPDATE BEFORE IT LEAVES THE HOSPITAL</div>
@@ -531,7 +532,7 @@ input[type=range]{accent-color:var(--teal);width:150px}
     <div class="eyebrow rv">13 · Status</div>
     <h2 class="rv" style="--d:1">What has run, and <em>what has not</em></h2>
     <div class="panel stat rv" style="--d:2">
-      <div class="srow"><span>Comparison of alone, federated and pooled training over 5 runs</span><span class="pill ok">Ran</span></div>
+      <div class="srow"><span>Comparison of alone, swarm and all-records-in-one-place training over 5 runs</span><span class="pill ok">Ran</span></div>
       <div class="srow"><span>NVIDIA FLARE simulator: swarm and FedAvg, with and without noise</span><span class="pill ok">Ran</span></div>
       <div class="srow"><span>Certificates, coordinator and three hospital processes over mTLS; the one-command demo</span><span class="pill ok">Ran</span></div>
       <div class="srow"><span>Docker image, single-Spark compose setup, per-site launcher</span><span class="pill no">Not yet run</span></div>
@@ -558,7 +559,7 @@ input[type=range]{accent-color:var(--teal);width:150px}
   <div class="wrap">
     <div class="eyebrow rv" style="justify-content:center">ANCHOR-IBD</div>
     <h2 class="rv" style="--d:1">Zero records moved.<br><em>One shared model.</em></h2>
-    <p class="lede rv" style="--d:2">Three hospitals, two countries, no central model holder, and about 88% of the gain from pooling, on calibrated synthetic data today and ready for the governance work that real data needs.</p>
+    <p class="lede rv" style="--d:2">Three hospitals, two countries, no central model holder, and about 88% of the gain from copying all records to one place, on calibrated synthetic data today and ready for the governance work that real data needs.</p>
     <div class="links rv" style="--d:3"><a class="btn primary" href="#sim">Train the swarm again</a><a class="btn" href="#hero">Back to the start</a></div>
     <p class="tiny rv" style="--d:4;margin-top:26px">RISE · Region Östergötland · Örebro University · Oslo University Hospital · AbbVie · Vinnova 2026-00990</p>
   </div>
@@ -700,9 +701,12 @@ enter.problem = () => countUp($("#problem"));
 
 /* ============ TOPOLOGY SWITCHER ============ */
 const TOPO = {
-  central: {facts: [["Patient records leave the hospital", "yes", "bad"], ["Who holds the model", "one central party", "bad"], ["Legal across the border", "hard (GDPR, EHDS)", "bad"], ["Accuracy", "ceiling", "good"]]},
-  fedavg: {facts: [["Patient records leave the hospital", "no", "good"], ["Who holds the model", "the central server", "meh"], ["What travels", "model weights", "good"], ["Accuracy", "close to the ceiling", "good"]]},
-  swarm: {facts: [["Patient records leave the hospital", "no", "good"], ["Who holds the model", "every hospital, in turn", "good"], ["What the coordinator sees", "start / stop only", "good"], ["Accuracy", "same as FedAvg", "good"]]},
+  central: {desc: "Every hospital sends a copy of its patient records to one shared database, and the model is trained there. It gives the best accuracy, which is why the results call it the “ceiling”, but the records leave the hospitals and cross the border. That is what ANCHOR-IBD cannot do.",
+    facts: [["What is sent", "patient records", "bad"], ["Who holds the model", "the owner of the database", "bad"], ["Allowed across the border", "hard (GDPR, EHDS)", "bad"], ["Accuracy", "the ceiling", "good"]]},
+  fedavg: {desc: "Each hospital trains the model on its own patients and sends only the updated weights to a central server. The server averages them into one shared model and sends it back. The records never leave, but one server holds the model.",
+    facts: [["What is sent", "model weights only", "good"], ["Who holds the model", "the central server", "meh"], ["Allowed across the border", "designed for it", "good"], ["Accuracy", "close to the ceiling", "good"]]},
+  swarm: {desc: "The same as B, but without a central server: each round a different hospital does the averaging. A small coordinator only starts the job. This is what the proof of concept runs.",
+    facts: [["What is sent", "model weights only", "good"], ["Who holds the model", "every hospital, in turn", "good"], ["What the coordinator sees", "start / stop only", "good"], ["Accuracy", "same as B", "good"]]},
 };
 const topo = {mode: "swarm", t0: 0, agg: 0, round: 0};
 const tsvg = $("#topoSvg");
@@ -710,7 +714,7 @@ const TN = [{x: 110, y: 320}, {x: 490, y: 320}, {x: 300, y: 410}], TC = {x: 300,
 function drawTopo() {
   tsvg.innerHTML = "";
   const m = topo.mode, hubCol = m === "swarm" ? COL.dim : COL.swarm;
-  const label = m === "central" ? "Central database" : m === "fedavg" ? "Central server" : "Coordinator";
+  const label = m === "central" ? "Shared database" : m === "fedavg" ? "Central server" : "Coordinator";
   TN.forEach(n => S("line", {x1: TC.x, y1: TC.y + 28, x2: n.x, y2: n.y - 34, stroke: m === "swarm" ? "rgba(255,255,255,.14)" : "rgba(90,184,255,.45)", "stroke-width": m === "swarm" ? 1.5 : 2.5, "stroke-dasharray": m === "swarm" ? "4 7" : ""}, tsvg));
   if (m === "swarm") for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) S("line", {x1: TN[i].x, y1: TN[i].y, x2: TN[j].x, y2: TN[j].y, stroke: "rgba(62,230,200,.35)", "stroke-width": 2.5, class: "lk", "data-i": i, "data-j": j}, tsvg);
   S("rect", {x: TC.x - 105, y: TC.y - 28, width: 210, height: 56, rx: 14, fill: "rgba(12,24,30,.95)", stroke: hubCol, "stroke-width": m === "swarm" ? 1.5 : 2, "stroke-dasharray": m === "swarm" ? "6 5" : ""}, tsvg);
@@ -721,6 +725,7 @@ function drawTopo() {
   });
   topo.dots = TN.map(() => S("circle", {r: 7, fill: COL.swarm, opacity: 0}, tsvg));
   topo.tag = ST(tsvg, 300, 455, "", {"text-anchor": "middle", fill: COL.muted, "font-size": 12, "font-family": "JetBrains Mono"});
+  $("#topoDesc").textContent = TOPO[m].desc;
   $("#topoFacts").innerHTML = TOPO[m].facts.map(([a, b, c]) => `<div class="fact"><span>${a}</span><span class="${c}">${b}</span></div>`).join("");
 }
 function animTopo(now) {
@@ -741,7 +746,7 @@ function animTopo(now) {
     d.setAttribute("fill", m === "central" ? COL.rose : inb ? COL.muted : COL.swarm);
     d.setAttribute("r", m === "central" ? 9 : 7); d.setAttribute("opacity", 1);
   });
-  topo.tag.textContent = m === "central" ? "patient records travel to one place" : m === "fedavg" ? "weights to the server, model back" : `round ${topo.round + 1}: ${HOSP[a]} averages`;
+  topo.tag.textContent = m === "central" ? "red: patient records copied to one place" : m === "fedavg" ? "grey: weights to the server · blue: averaged model back" : `round ${topo.round + 1}: ${HOSP[a]} averages · grey: weights in · blue: model out`;
   requestAnimationFrame(animTopo);
 }
 $$("#topoTabs .chip").forEach(b => b.onclick = () => { $$("#topoTabs .chip").forEach(x => x.classList.toggle("on", x === b)); topo.mode = b.dataset.t; drawTopo(); });
@@ -896,7 +901,7 @@ function paintChart() {
   $("#simRO").innerHTML = [
     ["Alone (average)", sim.aloneAvg, COL.local],
     ["Swarm, round " + sim.round, cur, COL.swarm],
-    ["Pooled ceiling", sim.pooled, COL.pooled],
+    ["All records in one place", sim.pooled, COL.pooled],
   ].map(([l, v, c]) => `<div class="ro"><small>${l}</small><b style="color:${c}">${v == null ? "–" : v.toFixed(3)}</b></div>`).join("");
 }
 let simTimer = null;
@@ -905,7 +910,7 @@ function simStatus() {
   if (!h) { $("#simStatus").innerHTML = "Press <b>Play</b> to start round 1."; return; }
   const gain = sim.pooled - sim.aloneAvg, got = (h.avg - sim.aloneAvg) / (gain || 1);
   $("#simStatus").innerHTML = `Round <b>${sim.round}</b> of ${ROUNDS} · ${HOSP[h.agg]} averaged · swarm ${h.avg >= sim.aloneAvg ? "beats" : "is still below"} training alone` +
-    (gain > 0 && h.avg > sim.aloneAvg ? ` · <b>${Math.round(Math.min(1.5, got) * 100)}%</b> of the pooled gain` : "");
+    (gain > 0 && h.avg > sim.aloneAvg ? ` · <b>${Math.round(Math.min(1.5, got) * 100)}%</b> of the gain from copying all records to one place` : "");
 }
 function simTick() {
   if (!simRound()) { simStop(); $("#simPlay").textContent = "↻ Run again"; return; }
@@ -1029,7 +1034,7 @@ function drawCurve() {
   for (let v = lo; v <= hi + 1e-9; v += .02) { S("line", {x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: COL.line}, svg); ST(svg, m.l - 8, y(v) + 4, v.toFixed(2), {"text-anchor": "end"}); }
   [1, 10, 20, 30].forEach(r => ST(svg, x(r), H - 8, "round " + r, {"text-anchor": "middle"}));
   const labels = [];
-  [[.743, COL.local, "Alone"], [.760, COL.pooled, "Pooled"]].forEach(([v, c, l]) => { S("line", {x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: c, "stroke-width": 1.5, "stroke-dasharray": "6 6"}, svg); labels.push({y: y(v), t: l, c: COL.muted}); });
+  [[.743, COL.local, "Alone"], [.760, COL.pooled, "All in one place"]].forEach(([v, c, l]) => { S("line", {x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: c, "stroke-width": 1.5, "stroke-dasharray": "6 6"}, svg); labels.push({y: y(v), t: l, c: COL.muted}); });
   const paths = [];
   Object.entries(HC).forEach(([k, a], i) => {
     const main = i === 0;

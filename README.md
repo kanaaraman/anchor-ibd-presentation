@@ -10,7 +10,7 @@ It works in any modern desktop or mobile browser. Scroll, or use the arrow keys.
 
 ## What is in it
 
-15 scenes:
+16 scenes:
 
 | Scene | What it shows |
 | --- | --- |
@@ -21,6 +21,7 @@ It works in any modern desktop or mobile browser. Scroll, or use the arrow keys.
 | On the Sparks | What each hospital's DGX Spark runs and sends |
 | **What it predicts** | A therapy-selection explorer: describe a patient and compare the predicted chance of remission for infliximab, adalimumab, vedolizumab and ustekinumab, using the model just trained in your browser |
 | The data | The three synthetic OMOP CDM cohorts and their different case mixes |
+| **Is the data realistic?** | How the synthetic patients are generated, calibrated to IBSEN III, SWIBREG, VARSITY, SEAVUE and ACT 1 figures, and checked: 0 of 9 checks passed before calibration, 9 of 9 after |
 | Results | The measured PoC results by hospital and by sex |
 | Rounds and privacy | The learning curve over 30 rounds and a privacy dial |
 | Run it | A replay of a real run of the one-command demo |
@@ -38,6 +39,8 @@ Google Fonts load from the internet and fall back to system fonts offline.
 
 ## Data and scope
 
-All patients are synthetic; no real registry data is used. The in-browser simulation uses a small logistic model, so its numbers vary with each new cohort. The "Results" and "Rounds and privacy" scenes show the measured numbers from the proof-of-concept code: AUROC 0.714 for each hospital alone, 0.728 for swarm learning and 0.734 for pooled data, on 3,000 new synthetic patients per hospital, averaged over 5 training runs. The predictions are a research demonstration and must not be used for clinical decisions.
+All patients are synthetic; no real registry data is used. The generator's case mix and drug remission rates are calibrated to published figures (IBSEN III, a SWIBREG ustekinumab study, and the VARSITY, SEAVUE and ACT 1 trials) and validated against them; two IBSEN III figures and the ACT 1 figure are still provisional because they come from secondary sources.
+
+The in-browser simulation uses a small logistic model, so its numbers vary with each new cohort. The "Results" and "Rounds and privacy" scenes show the measured numbers from the proof-of-concept code: AUROC 0.743 for each hospital alone, 0.758 for swarm learning and 0.760 for pooled data, on 3,000 new synthetic patients per hospital, averaged over 5 training runs. These numbers show that the federated machinery works on realistic-looking data; they say nothing about real-world predictive performance. The predictions are a research demonstration and must not be used for clinical decisions.
 
 Part of the Vinnova-funded ANCHOR-IBD feasibility project (2026-00990): Region Östergötland, RISE, Örebro University, AbbVie and Oslo University Hospital.
